@@ -1,9 +1,9 @@
-import Koa from 'koa'
+import cron from 'cron'
 
-const app = new Koa()
+const CronJob = cron.CronJob
 
-app.use(async (ctx) => {
-  ctx.body = '🍎 Cron job runnig 🍏'
-})
+const job = new CronJob('*/5 * * * * *', () => {
+  console.log('Cron job running every 5 sec.')
+}, null, true, 'Europe/Lisbon')
 
-app.listen(5678)
+job.start()
