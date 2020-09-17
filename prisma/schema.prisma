@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://docker:docker@localhost:6060/careel"
+}
+
+model Abilities {
+  id      String @id
+  ability String
+  user_id String
+  User    User   @relation(fields: [user_id], references: [id])
+}
+
+model Banned {
+  id           String   @id
+  banned_email String   @unique
+  ban_reason   String
+  ban_date     DateTime @default(now())
+  user_id      String
+  User         User     @relation(fields: [user_id], references: [id])
+}
+
+model Education {
+  id             String @id
+  course_name    String
+  course_level   String
+  course_college String
+  course_date    String
+  user_id        String
+  User           User   @relation(fields: [user_id], references: [id])
+}
+
+model Experiences {
+  id           String @id
+  job_title    String
+  company_name String
+  project_name String
+  project_link String
+  job_date     String
+  user_id      String
+  User         User   @relation(fields: [user_id], references: [id])
+}
+
+model Languages {
+  id       String @id
+  language String
+  user_id  String
+  User     User   @relation(fields: [user_id], references: [id])
+}
+
+model Messages {
+  id          String   @id
+  sent_at     DateTime @default(now())
+  message     String
+  receiver_id String
+  sender_id   String
+  User        User     @relation(fields: [sender_id], references: [id])
+}
+
+model Portfolios {
+  id           String @id
+  website_name String
+  website_link String
+  user_id      String
+  User         User   @relation(fields: [user_id], references: [id])
+}
+
+model Profile {
+  id              String @id
+  first_name      String
+  last_name       String
+  country         String
+  city            String
+  description     String
+  job_title       String
+  field           String
+  contact         String @unique
+  profile_picture String
+  user_id         String @unique
+  User            User   @relation(fields: [user_id], references: [id])
+}
+
+model Security {
+  id              String   @id
+  login_date      DateTime @default(now())
+  device_product  String
+  device_platform String
+  device_ip       String
+  device_allowed  Boolean  @default(true)
+  user_id         String
+  device_type     String   @default("Não defenido.")
+  User            User     @relation(fields: [user_id], references: [id])
+}
+
+model User {
+  id               String         @id
+  email            String         @unique
+  password         String
+  role             String
+  is_public        Boolean        @default(false)
+  admin            Boolean        @default(false)
+  terms_conditions Boolean        @default(false)
+  newsletter       Boolean        @default(false)
+  job              Boolean        @default(false)
+  Abilities        Abilities[]
+  Banned           Banned[]
+  Education        Education[]
+  Experiences      Experiences[]
+  Languages        Languages[]
+  Messages         Messages[]
+  Portfolios       Portfolios[]
+  Profile          Profile?
+  Security         Security[]
+  Sponsorships     Sponsorships[]
+  User_B           User[]         @relation("UserFollows")
+  User_A           User[]         @relation("UserFollows")
+}
+
+model Sponsorships {
+  id           String   @id
+  sponsor_date DateTime @default(now())
+  sponsor_logo String?
+  sponsor_link String?
+  still_online Boolean  @default(true)
+  user_id      String
+  User         User     @relation(fields: [user_id], references: [id])
+}
