@@ -7,7 +7,7 @@ import runCron from './cron'
 
 // const && vars
 const CronJob = cron.CronJob
-let ctx: Context
+let ctx
 
 // cron job (runs every 5 sec)
 const job = new CronJob('*/5 * * * * *', () => {
