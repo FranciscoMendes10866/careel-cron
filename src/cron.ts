@@ -6,9 +6,6 @@ const prisma = new PrismaClient()
 const runCron = async (ctx) => {
   // gets all the sponsorships
   const Sponsors = await prisma.sponsorships.findMany({
-    where: {
-      still_online: true
-    },
     select: {
       id: true,
       sponsor_date: true
@@ -43,13 +40,8 @@ const runCron = async (ctx) => {
         .reduce((s, { id }, i) => (validation[i] ? s.push(id) : s, s), [])
       // then, we will update every single item to false
       validatedIds.forEach(async (item) => {
-        await prisma.sponsorships.update({
-          where: {
-            id: item
-          },
-          data: {
-            still_online: false
-          }
+        await prisma.sponsorships.delete({
+          where: { id: item }
         })
       })
       // update response

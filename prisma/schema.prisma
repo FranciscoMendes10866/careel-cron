@@ -96,15 +96,15 @@ model Security {
 }
 
 model User {
-  id               String         @id
-  email            String         @unique
+  id               String        @id
+  email            String        @unique
   password         String
   role             String
-  is_public        Boolean        @default(false)
-  admin            Boolean        @default(false)
-  terms_conditions Boolean        @default(false)
-  newsletter       Boolean        @default(false)
-  job              Boolean        @default(false)
+  is_public        Boolean       @default(false)
+  admin            Boolean       @default(false)
+  terms_conditions Boolean       @default(false)
+  newsletter       Boolean       @default(false)
+  job              Boolean       @default(false)
   Abilities        Abilities[]
   Banned           Banned[]
   Education        Education[]
@@ -114,9 +114,9 @@ model User {
   Portfolios       Portfolios[]
   Profile          Profile?
   Security         Security[]
-  Sponsorships     Sponsorships[]
-  User_B           User[]         @relation("UserFollows")
-  User_A           User[]         @relation("UserFollows")
+  Sponsorships     Sponsorships?
+  User_B           User[]        @relation("UserFollows")
+  User_A           User[]        @relation("UserFollows")
 }
 
 model Sponsorships {
@@ -124,7 +124,6 @@ model Sponsorships {
   sponsor_date DateTime @default(now())
   sponsor_logo String?
   sponsor_link String?
-  still_online Boolean  @default(true)
-  user_id      String
+  user_id      String   @unique
   User         User     @relation(fields: [user_id], references: [id])
 }
